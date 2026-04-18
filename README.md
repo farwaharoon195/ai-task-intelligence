@@ -95,3 +95,64 @@ npm install
 node server.js
 
 frontend/index.html
+
+🚀 Future Improvements
+Real ML model (Python + Scikit-learn)
+User authentication system
+Cloud database (MongoDB / PostgreSQL)
+AI chatbot for task suggestions
+
+👨‍💻 Author
+
+Farwa Haroon
+
+📜 License
+
+MIT License
+
+
+---
+
+# 🌐 PART 3 — DEPLOY BACKEND ON RENDER
+
+## 🚀 Step-by-step
+
+### Step 1:
+Go to 👉 https://render.com
+
+---
+
+### Step 2:
+Click:
+New + → Web Service
+
+---
+
+### Step 3:
+Connect GitHub repo
+
+Select:
+
+ai-task-intelligence
+
+
+---
+
+### Step 4:
+Configure:
+
+- **Environment:** Node
+- **Build Command:** (leave empty or npm install)
+- **Start Command:**
+```bash
+node backend/server.js
+
+Step 5:
+
+Click Deploy
+
+🔗 After deploy:
+
+You will get:
+
+https://your-app.onrender.com
