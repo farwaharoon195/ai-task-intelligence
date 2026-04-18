@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>AI Task Intelligence System</title>
+<script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gradient-to-br from-slate-100 to-indigo-100 min-h-screen p-8">
+
+<div class="max-w-5xl mx-auto">
+
+<!-- HEADER -->
+<div class="mb-6">
+  <h1 class="text-4xl font-bold">🧠 AI Task Intelligence System</h1>
+  <p class="text-gray-600">Smart task prioritization using AI scoring engine</p>
+</div>
+
+<!-- FORM -->
+<div class="bg-white p-6 rounded-2xl shadow mb-6">
+
+  <div class="grid md:grid-cols-2 gap-3">
+    <input id="title" placeholder="Task" class="border p-2 rounded">
+    <input id="priority" type="number" placeholder="Priority (1-5)" class="border p-2 rounded">
+    <input id="deadline" type="date" class="border p-2 rounded">
+    <input id="time" type="number" placeholder="Hours" class="border p-2 rounded">
+  </div>
+
+  <button onclick="addTask()"
+    class="mt-4 w-full bg-indigo-600 text-white py-2 rounded-xl">
+    ➕ Add Task
+  </button>
+
+</div>
+
+<!-- TASKS -->
+<div id="tasks" class="space-y-4"></div>
+
+</div>
+
+<script>
+const API = "http://localhost:5000";
+
+/* ADD */
+async function addTask() {
+  await fetch(`${API}/tasks`, {
+    method: "POST",
+    headers: {"Content-Type":"application/json"},
+    body: JSON.stringify({
+      title: title.value,
+      priority: priority.value,
+      deadline: deadline.value,
+      estimated_time: time.value
+    })
+  });
+
+  loadTasks();
+}
+
+/* LOAD */
+async function loadTasks() {
+  const res = await fetch(`${API}/tasks`);
+  const tasks = await res.json();
+
+  const list = document.getElementById("tasks");
+  list.innerHTML = "";
+
+  tasks.forEach((t, i) => {
+
+    list.innerHTML += `
+      <div class="bg-white p-4 rounded-xl shadow">
+
+        <div class="flex justify-between">
+          <h2 class="${t.completed ? 'line-through text-gray-400' : ''}">
+            ${t.title}
+          </h2>
+
+          <span class="text-xs bg-indigo-100 px-2 py-1 rounded">
+            Score ${t.ai_score.toFixed(2)}
+          </span>
+        </div>
+
+        <p class="text-sm text-gray-600 mt-1">
+          📅 ${t.deadline} | ⏱ ${t.estimated_time} hrs
+        </p>
+
+        ${i === 0 ? `
+          <p class="text-green-600 text-xs mt-2 font-semibold">
+            🤖 AI Recommended Task
+          </p>
+        ` : ''}
+
+        <div class="flex gap-2 mt-3">
+          <button onclick="completeTask(${t.id})"
+            class="bg-green-500 text-white px-3 py-1 rounded">
+            Done
+          </button>
+
+          <button onclick="deleteTask(${t.id})"
+            class="bg-red-500 text-white px-3 py-1 rounded">
+            Delete
+          </button>
+        </div>
+
+      </div>
+    `;
+  });
+}
+
+/* DELETE */
+async function deleteTask(id) {
+  await fetch(`${API}/tasks/${id}`, { method: "DELETE" });
+  loadTasks();
+}
+
+/* COMPLETE */
+async function completeTask(id) {
+  await fetch(`${API}/tasks/complete/${id}`, { method: "PUT" });
+  loadTasks();
+}
+
+loadTasks();
+</script>
+
+</body>
+</html>
