@@ -2,20 +2,6 @@
 
 A smart task management web application powered by a lightweight AI-inspired scoring system that automatically prioritizes tasks based on urgency, importance, and estimated completion time.
 
----
-
-## 🚀 Live Demo
-
-Frontend (Vercel): https://your-vercel-link  
-Backend (Render): https://your-render-link
-
----
-
-## 📸 Preview
-
-(Add screenshots of your app here)
-
----
 
 ## 🧠 AI Feature (Core Highlight)
 
